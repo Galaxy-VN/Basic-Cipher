@@ -4,7 +4,7 @@
 
 package io.github.galaxyvn.informationsecurity;
 
-import io.github.galaxyvn.informationsecurity.week1.CaeserFrame;
+import io.github.galaxyvn.informationsecurity.week1.caesar.CaeserFrame;
 
 /**
  *
