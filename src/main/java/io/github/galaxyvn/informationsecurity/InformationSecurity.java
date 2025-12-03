@@ -4,7 +4,7 @@
 
 package io.github.galaxyvn.informationsecurity;
 
-import io.github.galaxyvn.informationsecurity.week1.caesar.CaeserFrame;
+import io.github.galaxyvn.informationsecurity.week1.transposition.TranspositionFrame;
 
 /**
  *
@@ -13,7 +13,7 @@ import io.github.galaxyvn.informationsecurity.week1.caesar.CaeserFrame;
 public class InformationSecurity {
 
     public static void main(String[] args) {
-        CaeserFrame frame = new CaeserFrame();
+        TranspositionFrame frame = new TranspositionFrame();
         frame.setVisible(true);
     }
 }
