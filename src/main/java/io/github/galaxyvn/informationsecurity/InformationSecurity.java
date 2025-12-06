@@ -4,7 +4,7 @@
 
 package io.github.galaxyvn.informationsecurity;
 
-import io.github.galaxyvn.informationsecurity.week1.transposition.TranspositionFrame;
+import io.github.galaxyvn.informationsecurity.week2.rc4.RC4Frame;
 
 /**
  *
@@ -13,7 +13,7 @@ import io.github.galaxyvn.informationsecurity.week1.transposition.TranspositionF
 public class InformationSecurity {
 
     public static void main(String[] args) {
-        TranspositionFrame frame = new TranspositionFrame();
+        RC4Frame frame = new RC4Frame();
         frame.setVisible(true);
     }
 }
