@@ -36,7 +36,7 @@ public class RC4Cipher {
             j = (j + S[i]) & 0xFF;
             swap(S, i, j);
             int t = (S[i] + S[j]) & 0xFF;
-            encrypted[k] = (byte) (encrypted[k] ^ S[t]);
+            encrypted[k] = (byte) (message[k] ^ S[t]);
         }
         return encrypted;
     }

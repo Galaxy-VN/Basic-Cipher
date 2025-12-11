@@ -11,4 +11,19 @@
         <maven.compiler.target>22</maven.compiler.target>
         <exec.mainClass>io.github.galaxyvn.informationsecurity.InformationSecurity</exec.mainClass>
     </properties>
+
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on -->
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk18on</artifactId>
+            <version>1.83</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.bouncycastle/bcpkix-jdk18on -->
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcpkix-jdk18on</artifactId>
+            <version>1.83</version>
+        </dependency>
+    </dependencies>
 </project>

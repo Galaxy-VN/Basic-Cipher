@@ -54,16 +54,32 @@ public class PlayfairCipher {
 
     private String formatText(String text) {
         String clean = text.toUpperCase().replaceAll("[^A-Z]", "").replace("J", "I");
-        StringBuilder sb = new StringBuilder(clean);
+        StringBuilder sb = new StringBuilder();
 
-        for (int i = 0; i < sb.length() - 1; i += 2) {
-            if (sb.charAt(i) == sb.charAt(i + 1)) {
-                sb.insert(i + 1, 'X');
+        int i = 0;
+        while (i < clean.length()) {
+            char first = clean.charAt(i);
+            
+            if (i + 1 < clean.length()) {
+                char second = clean.charAt(i + 1);
+                if (first == second) {
+                    sb.append(first);
+                    sb.append(first == 'X' ? 'Q' : 'X');
+                    i++;
+                } else {
+                    sb.append(first);
+                    sb.append(second);
+                    i += 2;
+                }
+            } else {
+                sb.append(first);
+                i++;
             }
         }
 
         if (sb.length() % 2 != 0) {
-            sb.append('X');
+            char last = sb.charAt(sb.length() - 1);
+            sb.append(last == 'X' ? 'Q' : 'X');
         }
 
         return sb.toString();
