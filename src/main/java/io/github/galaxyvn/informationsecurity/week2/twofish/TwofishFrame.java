@@ -1,11 +1,15 @@
-package io.github.galaxyvn.informationsecurity.week2.rc4;
+package io.github.galaxyvn.informationsecurity.week2.twofish;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -18,13 +22,13 @@ import javax.swing.JOptionPane;
  *
  * @author Administrator
  */
-public class RC4Frame extends javax.swing.JFrame {
-    private RC4Cipher rc4;
+public class TwofishFrame extends javax.swing.JFrame {
+    private TwofishCipher twofish = new TwofishCipher();
 
     /**
      * Creates new form DESFrame
      */
-    public RC4Frame() {
+    public TwofishFrame() {
         initComponents();
     }
 
@@ -50,6 +54,8 @@ public class RC4Frame extends javax.swing.JFrame {
         btn_decrypt = new javax.swing.JButton();
         btn_saveToFile = new javax.swing.JButton();
         btn_openFile = new javax.swing.JButton();
+        txt_iv = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -58,7 +64,7 @@ public class RC4Frame extends javax.swing.JFrame {
         jScrollPane1.setViewportView(txt_message);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel1.setText("RC4 Cipher Demo");
+        jLabel1.setText("Twofish Cipher Demo");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel2.setText("Message:");
@@ -101,6 +107,9 @@ public class RC4Frame extends javax.swing.JFrame {
             }
         });
 
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel5.setText("IV:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -110,9 +119,13 @@ public class RC4Frame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2)
+                    .addComponent(txt_key)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btn_encrypt)
                         .addGap(18, 18, 18)
@@ -122,14 +135,12 @@ public class RC4Frame extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(btn_openFile)
                         .addGap(0, 3, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2)
-                    .addComponent(txt_key)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(txt_iv))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(122, 122, 122))
+                .addGap(98, 98, 98))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -146,6 +157,10 @@ public class RC4Frame extends javax.swing.JFrame {
                             .addComponent(jLabel3)))
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txt_iv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
@@ -155,30 +170,44 @@ public class RC4Frame extends javax.swing.JFrame {
                     .addComponent(btn_decrypt)
                     .addComponent(btn_saveToFile)
                     .addComponent(btn_openFile))
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_encryptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_encryptActionPerformed
-        String message = txt_message.getText();
-        byte[] messageBytes = message.getBytes(StandardCharsets.UTF_8);
-        String key = txt_key.getText();
-        rc4 = new RC4Cipher(key.getBytes());
-        byte[] encryptedBytes = rc4.encrypt(messageBytes);
-        String encrypted = bytesToHexString(encryptedBytes);
-        txt_encrypted.setText(encrypted);
+        try {
+            String message = txt_message.getText();
+            byte[] key = txt_key.getText().getBytes(StandardCharsets.UTF_8);
+            byte[] iv = txt_iv.getText().getBytes(StandardCharsets.UTF_8);
+            
+            byte[] encrypted = twofish.encrypt(message, key, iv);
+            String encryptedText = Base64.getEncoder().encodeToString(encrypted);
+            
+            txt_encrypted.setText(encryptedText);
+        } catch(UnsupportedEncodingException ex) {
+            JOptionPane.showMessageDialog(this, "Unsupported encoding: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch(Exception ex) {
+            Logger.getLogger(this.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Error encrypting: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btn_encryptActionPerformed
 
     private void btn_decryptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_decryptActionPerformed
-        String encrypted = txt_encrypted.getText();
-        byte[] encryptedBytes = hexStringToByteArray(encrypted);
-        String key = txt_key.getText();
-        rc4 = new RC4Cipher(key.getBytes());
-        byte[] decryptedBytes = rc4.decrypt(encryptedBytes);
-        String decrypted = new String(decryptedBytes, StandardCharsets.UTF_8);
-        txt_message.setText(decrypted);
+        try {
+            String encryptedText = txt_encrypted.getText();
+            byte[] key = txt_key.getText().getBytes(StandardCharsets.UTF_8);
+            byte[] iv = txt_iv.getText().getBytes(StandardCharsets.UTF_8);
+            
+            byte[] decodedEncryptedText = Base64.getDecoder().decode(encryptedText);
+            String message = twofish.decrypt(decodedEncryptedText, key, iv);
+            
+            txt_message.setText(message);
+        } catch(Exception ex) {
+            Logger.getLogger(this.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Error encrypting: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btn_decryptActionPerformed
 
     private void btn_saveToFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveToFileActionPerformed
@@ -217,22 +246,6 @@ public class RC4Frame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_openFileActionPerformed
 
-    private static byte[] hexStringToByteArray(String s) {
-        int len = s.length();
-        byte[] data = new byte[len / 2];
-        for (int i = 0; i < len; i += 2) {
-            data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4) + Character.digit(s.charAt(i + 1), 16));
-        }
-        return data;
-    }
-    
-    private static String bytesToHexString(byte[] bytes) {
-        StringBuilder sb = new StringBuilder();
-        for (byte b : bytes) {
-            sb.append(String.format("%02X", b));
-        }
-        return sb.toString();
-    }
     
     /**
      * @param args the command line arguments
@@ -251,30 +264,14 @@ public class RC4Frame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(RC4Frame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TwofishFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(RC4Frame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TwofishFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(RC4Frame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TwofishFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(RC4Frame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TwofishFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -295,7 +292,7 @@ public class RC4Frame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new RC4Frame().setVisible(true);
+                new TwofishFrame().setVisible(true);
             }
         });
     }
@@ -309,9 +306,11 @@ public class RC4Frame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea txt_encrypted;
+    private javax.swing.JTextField txt_iv;
     private javax.swing.JTextField txt_key;
     private javax.swing.JTextArea txt_message;
     // End of variables declaration//GEN-END:variables
