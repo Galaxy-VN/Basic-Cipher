@@ -6,7 +6,6 @@ package io.github.galaxyvn.informationsecurity.week3.rsa;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
-import java.util.Random;
 
 /**
  *
