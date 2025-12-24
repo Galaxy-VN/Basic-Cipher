@@ -288,12 +288,12 @@ public class PlayfairFrame extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                new CaeserFrame().setVisible(true);
-//            }
-//        });
-//        new CaeserFrame().setVisible(true);
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new PlayfairFrame().setVisible(true);
+            }
+        });
+        new PlayfairFrame().setVisible(true);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

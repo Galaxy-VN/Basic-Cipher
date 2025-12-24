@@ -1,27 +1,25 @@
+package io.github.galaxyvn.informationsecurity.week1.autokey;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package io.github.galaxyvn.informationsecurity.week1.vigenere;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import java.io.*;
 
 /**
  *
  * @author Administrator
  */
-public class ViginereFrame extends javax.swing.JFrame {
+public class AutokeyFrame extends javax.swing.JFrame {
+    private final AutokeyCipher autokeyCipher = new AutokeyCipher();
 
     /**
-     * Creates new form CaeserFrame
+     * Creates new form DESFrame
      */
-    public ViginereFrame() {
+    public AutokeyFrame() {
         initComponents();
     }
 
@@ -34,32 +32,40 @@ public class ViginereFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txt_message = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txt_key = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
+        txt_key = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txt_encrypted = new javax.swing.JTextArea();
         btn_encrypt = new javax.swing.JButton();
         btn_decrypt = new javax.swing.JButton();
         btn_openFile = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        txt_plainText = new javax.swing.JTextArea();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        txt_cipherText = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        txt_message.setColumns(20);
+        txt_message.setRows(5);
+        jScrollPane1.setViewportView(txt_message);
+
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel1.setText("Vigenère Cipher Demo");
+        jLabel1.setText("Autokey Cipher Demo");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel2.setText("Plain Text");
+        jLabel2.setText("Message:");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel3.setText("Key");
+        jLabel3.setText("Key:");
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel4.setText("Cipher Text");
+        jLabel4.setText("Encrypted:");
+
+        txt_encrypted.setColumns(20);
+        txt_encrypted.setRows(5);
+        jScrollPane2.setViewportView(txt_encrypted);
 
         btn_encrypt.setText("Encrypt");
         btn_encrypt.addActionListener(new java.awt.event.ActionListener() {
@@ -75,51 +81,40 @@ public class ViginereFrame extends javax.swing.JFrame {
             }
         });
 
-        btn_openFile.setText("Open Ciphertext File");
+        btn_openFile.setText("Open File");
         btn_openFile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_openFileActionPerformed(evt);
             }
         });
 
-        txt_plainText.setColumns(20);
-        txt_plainText.setRows(5);
-        jScrollPane1.setViewportView(txt_plainText);
-
-        txt_cipherText.setColumns(20);
-        txt_cipherText.setRows(5);
-        jScrollPane3.setViewportView(txt_cipherText);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(123, 123, 123)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btn_encrypt)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
-                                .addComponent(btn_decrypt)
-                                .addGap(67, 67, 67)
-                                .addComponent(btn_openFile))
-                            .addComponent(jScrollPane3)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(77, 77, 77)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txt_key)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE))))
+                        .addComponent(btn_encrypt)
+                        .addGap(18, 18, 18)
+                        .addComponent(btn_decrypt, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btn_openFile)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2)
+                    .addComponent(txt_key)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(100, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(96, 96, 96))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -128,21 +123,22 @@ public class ViginereFrame extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txt_key, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3)))
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txt_key, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btn_openFile)
                     .addComponent(btn_encrypt)
-                    .addComponent(btn_decrypt))
+                    .addComponent(btn_decrypt)
+                    .addComponent(btn_openFile))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -150,37 +146,53 @@ public class ViginereFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_encryptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_encryptActionPerformed
-        String plainText = txt_plainText.getText();
+        String message = txt_message.getText();
         String key = txt_key.getText();
-        String cipherText = ViginereCipher.encrypt(plainText, key);
-        JOptionPane.showMessageDialog(this, "Encrypted successfully.");
-        txt_cipherText.setText(cipherText);
-        saveToFile(cipherText);
+
+        if (!message.isEmpty() && !key.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Encrypted successfully.");
+            String encrypted = autokeyCipher.encrypt(message, key);
+            txt_encrypted.setText(encrypted);
+            saveToFile(encrypted);
+        } else {
+            JOptionPane.showMessageDialog(this, "Please enter message and key.");
+        }
     }//GEN-LAST:event_btn_encryptActionPerformed
 
     private void btn_decryptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_decryptActionPerformed
-        String cipherText = txt_cipherText.getText();
+        String cipherText = txt_encrypted.getText();
         String key = txt_key.getText();
-        String plainText = ViginereCipher.decrypt(cipherText, key);
-        JOptionPane.showMessageDialog(this, "Decrypted  successfully.");
-        txt_plainText.setText(plainText);
+
+        if (!cipherText.isEmpty() && !key.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Decrypted successfully.");
+            String message = autokeyCipher.decrypt(cipherText, key);
+            txt_message.setText(message);
+        } else {
+            JOptionPane.showMessageDialog(this, "Please enter cipher text and key.");
+        }
     }//GEN-LAST:event_btn_decryptActionPerformed
 
     private void btn_openFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_openFileActionPerformed
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileFilter(new FileNameExtensionFilter("Text Files", "txt'"));
-        int userSelection = fileChooser.showOpenDialog(this);
-        if(userSelection==JFileChooser.APPROVE_OPTION){
-            try(BufferedReader reader = new BufferedReader(new FileReader(fileChooser.getSelectedFile()))) {
-                JOptionPane.showMessageDialog(this, "File opened successfully");
-                txt_cipherText.read(reader, null);
+        fileChooser.setDialogTitle("Save encrypted message to file");
+        int userSelection = fileChooser.showSaveDialog(this);
+        if(userSelection == JFileChooser.APPROVE_OPTION) {
+            File fileToOpen = fileChooser.getSelectedFile();
+            try (BufferedReader reader = new BufferedReader(new FileReader(fileToOpen))) {
+                StringBuilder encryptedBuilder = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    encryptedBuilder.append(line);
+                }
+                String encryptedMessage = encryptedBuilder.toString().trim();
+                txt_encrypted.setText(encryptedMessage);
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, "Error opening file: "+ex.getMessage());
+                JOptionPane.showMessageDialog(this, "Error opening file: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_btn_openFileActionPerformed
 
-    private void saveToFile(String content){
+    private void saveToFile(String content) {
         JFileChooser fileChooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Text Files", "txt");
         fileChooser.setFileFilter(filter);
@@ -211,23 +223,29 @@ public class ViginereFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ViginereFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AutokeyFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ViginereFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AutokeyFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ViginereFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AutokeyFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ViginereFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AutokeyFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ViginereFrame().setVisible(true);
+                new AutokeyFrame().setVisible(true);
             }
         });
-        new ViginereFrame().setVisible(true);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -239,9 +257,9 @@ public class ViginereFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextArea txt_cipherText;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextArea txt_encrypted;
     private javax.swing.JTextField txt_key;
-    private javax.swing.JTextArea txt_plainText;
+    private javax.swing.JTextArea txt_message;
     // End of variables declaration//GEN-END:variables
 }

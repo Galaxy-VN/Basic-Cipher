@@ -9,63 +9,43 @@ package io.github.galaxyvn.informationsecurity.week1.autokey;
  * @author Galaxy-VN
  */
 public class AutokeyCipher {
-    
-    // Example 
-    // @String plainText = AB
-    // @int key = 7;
-    // key -> currentKey
-    // Vong 1 c = A
-    // char base = A (65)
-    // int value = 0
-    // encryptedVal = 7
-    // kq H (72)
-    // value -> currentKey
-    // Vong 2 c = 0
-    // char base = B (66)
-    // int value = 1
-    // encryptedVal = 8
-    // kq H + I (73)
-    // return HI
-    public String encrypt(String plainText, int key) {
-        StringBuilder result = new StringBuilder();
-        int currentKey = (key % 26 + 26) % 26; // ASCII lowercase a-z 2 lan mod de tranh truong hop key la so am
-        
-        for (char c : plainText.toCharArray()) {
-            if (Character.isLetter(c)) {
-                char base = Character.isUpperCase(c) ? 'A' : 'a';
-                int value = Character.toLowerCase(c) - 'a';
-                
-                int encryptedVal = (value + currentKey) % 26;
-                
-                result.append((char) (base + encryptedVal));
-                currentKey = value; 
-            } else {
-                result.append(c);
-            }
+    public String encrypt(String plaintext, String key) {
+        plaintext = plaintext.toUpperCase().replaceAll("[^A-Z]", "");
+        key = key.toUpperCase();
+
+        StringBuilder extendedKey = new StringBuilder(key);
+        extendedKey.append(plaintext); // Extend key with plaintext
+
+        StringBuilder ciphertext = new StringBuilder();
+
+        for (int i = 0; i < plaintext.length(); i++) {
+            char plainChar = plaintext.charAt(i);
+            char keyChar = extendedKey.charAt(i);
+
+            int encryptedChar = (plainChar - 'A' + keyChar - 'A') % 26 + 'A';
+            ciphertext.append((char) encryptedChar);
         }
-        
-        return result.toString();
+
+        return ciphertext.toString();
     }
-    
-    public String decrypt(String cipherText, int key) {
-        StringBuilder result = new StringBuilder();
-        int currentKey = (key % 26 + 26) % 26;
 
-        for (int i = 0; i < cipherText.length(); i++) {
-            char c = cipherText.charAt(i);
+    public String decrypt(String ciphertext, String key) {
+        ciphertext = ciphertext.toUpperCase().replaceAll("[^A-Z]", "");
+        key = key.toUpperCase();
 
-            if (Character.isLetter(c)) {
-                char base = Character.isUpperCase(c) ? 'A' : 'a';
-                int value = Character.toLowerCase(c) - 'a';
+        StringBuilder plaintext = new StringBuilder();
+        StringBuilder extendedKey = new StringBuilder(key);
 
-                int decryptedVal = (value - currentKey + 26) % 26;
-                result.append((char) (base + decryptedVal));
+        for (int i = 0; i < ciphertext.length(); i++) {
+            char cipherChar = ciphertext.charAt(i);
+            char keyChar = extendedKey.charAt(i);
 
-                currentKey = decryptedVal;
-            } else {
-                result.append(c);
-            }
+            int decryptedChar = (cipherChar - 'A' - (keyChar - 'A') + 26) % 26 + 'A';
+            plaintext.append((char) decryptedChar);
+
+            extendedKey.append((char) decryptedChar); // Extend key with each decrypted char
         }
-        return result.toString();
+
+        return plaintext.toString();
     }
 }

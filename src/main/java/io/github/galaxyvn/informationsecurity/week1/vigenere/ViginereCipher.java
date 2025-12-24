@@ -9,15 +9,15 @@ package io.github.galaxyvn.informationsecurity.week1.vigenere;
  * @author Administrator
  */
 public class ViginereCipher {
-    public String encrypt(String text, String key) {
+    public static String encrypt(String text, String key) {
         return viginereCipher(text, key, true);
     }
 
-    public String decrypt(String text, String key) {
+    public static String decrypt(String text, String key) {
         return viginereCipher(text, key, false);
     }
     
-    private String viginereCipher(String text, String key, boolean encrypt) {
+    private static String viginereCipher(String text, String key, boolean encrypt) {
         StringBuilder result = new StringBuilder();
         key = key.toLowerCase();
         
